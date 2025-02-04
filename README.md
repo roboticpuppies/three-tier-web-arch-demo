@@ -6,7 +6,7 @@ A repository to demonstrate how Three-tier web application looks like. All appli
 ## Architecture Diagram
 
 ```mermaid
-flowchart TD
+flowchart LR
     A[User]-->B[Load Balancer 192.168.56.5]
     B-->C[Frontend VM 192.168.56.2]
     B-->D[Backend VM 192.168.56.3]
