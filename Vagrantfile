@@ -32,7 +32,7 @@ Vagrant.configure("2") do |config|
     nvm install 18
     echo "NodeJS version: $(node -v)"
     echo "NPM version: $(npm -v)"
-    sudo npm install -g pm2
+    sudo npm install -g pm2 yarn
   SHELL
 
   # Define Load Balancer VM
@@ -115,14 +115,14 @@ EOF
 
       echo "Installing dependencies"
       cd $HOME/backend
-      npm install
+      yarn install
 
       echo "Generating Prisma client, running migrations, and seeding the database"
       npx prisma generate
       npx prisma migrate deploy && npx prisma db seed
       
       echo "Starting the backend server using pm2"
-      pm2 start npm --name "backend" -- start
+      pm2 start yarn --name "backend" -- start
     SHELL
   end
 
@@ -143,10 +143,10 @@ EOF
       
       echo "Installing dependencies"
       cd $HOME/frontend/
-      npm install
+      yarn install
 
       echo "Building the frontend"
-      REACT_APP_BACKEND_URL="http://192.168.56.5/api" npm run build
+      REACT_APP_BACKEND_URL="http://192.168.56.5/api" NODE_ENV=production yarn run build
 
       echo "Copying the build to /var/www/html to serve it using Nginx"
       sudo mv $HOME/frontend/build/* /var/www/html/ 
