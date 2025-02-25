@@ -7,7 +7,7 @@ Vagrant.configure("2") do |config|
   # Configure VirtualBox related settings
   config.vm.provider "virtualbox" do |vb|
     # Set CPU and Memory of the VM
-    vb.memory = "512"
+    vb.memory = "768"
     vb.cpus = 2
   end
 
@@ -34,6 +34,38 @@ Vagrant.configure("2") do |config|
     echo "NPM version: $(npm -v)"
     sudo npm install -g pm2
   SHELL
+
+  # Define Load Balancer VM
+  config.vm.define "lb" do |lb|
+    lb.vm.hostname = "lb"
+    lb.vm.network "private_network", ip: "192.168.56.5"
+    lb.vm.provision "shell", inline: <<-SHELL
+    
+    echo "Installing Nginx"
+    apt install -y nginx
+    
+    echo "Configuring Nginx as a Load Balancer"
+cat > /etc/nginx/sites-available/default << EOF
+  server {
+      listen 80;
+      server_name _;
+
+      # Forward requests to /api to the backend
+      location ~* /api {
+          proxy_pass http://192.168.56.3:3000;
+      }
+      
+      # Forward other requests to the frontend
+      location / {
+          proxy_pass http://192.168.56.2;
+      }
+  }
+EOF
+    echo "Restart NGINX to apply changes"
+    systemctl restart nginx
+    SHELL
+  end
+      
 
   # Define DB VM
   config.vm.define "db" do |db|
@@ -114,7 +146,7 @@ Vagrant.configure("2") do |config|
       npm install
 
       echo "Building the frontend"
-      REACT_APP_BACKEND_URL="http://backend.demo.servercare.id:3000/api" npm run build
+      REACT_APP_BACKEND_URL="http://192.168.56.5/api" npm run build
 
       echo "Copying the build to /var/www/html to serve it using Nginx"
       sudo mv $HOME/frontend/build/* /var/www/html/ 
