@@ -18,6 +18,6 @@ WORKDIR /app
 COPY --from=build /app ./
 
 # # Set environment variable for Prisma to find DB at runtime
-# ENV NODE_ENV=production
+ENV NODE_ENV=development
 
 CMD ["npm", "start"]
