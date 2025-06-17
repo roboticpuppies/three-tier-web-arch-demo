@@ -1,0 +1,3 @@
+# Three-tier Web App Demo
+
+This repository demonstrates the structure and implementation of a three-tier web application architecture, typically consisting of presentation, application, and data tiers. Use this repository to understand the purpose, setup, and usage of the demo project. Navigate to the `vm-version` to use VM to run the application. After we learn how to set it up using VM, let's try to use Docker to run it. Navigate to the `container-version` to do that.
