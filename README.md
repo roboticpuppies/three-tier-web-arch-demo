@@ -21,3 +21,6 @@ flowchart LR
 4. Access the app from `http://192.168.56.5`.
 5. Run `vagrant destroy` to delete all VMs and clean up the project after you've done testing.
 
+## Meeting Recording
+
+You can watch the recording session when I explain the material at the following [link](https://youtu.be/PclsRWCWm2o) in Indonesian.
