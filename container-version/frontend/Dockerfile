@@ -8,7 +8,7 @@ RUN git clone https://github.com/khaledosman/react-redux-realworld-example-app.g
 WORKDIR /app
 RUN yarn install
 
-ENV REACT_APP_BACKEND_URL="http://localhost/api"
+ENV REACT_APP_BACKEND_URL="http://192.168.200.250:8090/api"
 RUN yarn run build
 
 FROM nginx:stable-alpine AS final
